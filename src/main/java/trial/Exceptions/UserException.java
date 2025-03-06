@@ -1,4 +1,4 @@
-package trial;
+package trial.Exceptions;
 
 public class UserException {
 }

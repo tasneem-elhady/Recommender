@@ -1,4 +1,4 @@
-package trial;
+package trial.UserValidator;
 
 public class UserNameValidator {
 }
