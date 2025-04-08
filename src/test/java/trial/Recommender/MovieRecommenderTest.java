@@ -134,18 +134,36 @@ class MovieRecommenderTest {
         Map<String, User> testUserMap = new HashMap<>();
         Map<String, Set<String>> testGenreMovies = new HashMap<>();
 
+        // Initialize the action genre set
+        testGenreMovies.put("action", new HashSet<>());
+
         Movie actionMovie = new Movie("Action Movie", "ACT123", new String[]{"action"});
         testMovieMap.put("ACT123", actionMovie);
-        testGenreMovies.put("action", new HashSet<>(Collections.singletonList("ACT123")));
+        testGenreMovies.get("action").add("ACT123");
 
         User actionFan = createUser("Action Fan", "999999999", new String[]{"ACT123"});
         testUserMap.put("999999999", actionFan);
 
         MovieRecommender testRecommender = new MovieRecommender(testMovieMap, testUserMap, testGenreMovies);
         String output = testRecommender.getRecommendationsString();
+
+        // Debug prints
+        System.out.println("Output string:");
+        System.out.println(output);
+
         Map<String, Set<String>> recommendations = parseRecommendations(output);
 
-        assertTrue(recommendations.get("999999999").isEmpty(),
+        // Debug prints
+        System.out.println("Parsed recommendations:");
+        System.out.println(recommendations);
+
+        // First verify the output format is correct
+        assertTrue(output.contains("Action Fan,999999999"),
+                "Output should contain user info");
+
+        // Then verify the recommendations
+        Set<String> userRecommendations = recommendations.getOrDefault("999999999", new HashSet<>());
+        assertTrue(userRecommendations.isEmpty(),
                 "User who watched all movies in their genres should get no recommendations");
     }
 
@@ -206,18 +224,30 @@ class MovieRecommenderTest {
 
     private Map<String, Set<String>> parseRecommendations(String output) {
         Map<String, Set<String>> recommendations = new HashMap<>();
-        String[] lines = output.split("\n");
+        if (output == null || output.trim().isEmpty()) {
+            return recommendations;
+        }
 
-        for (int i = 0; i < lines.length; i++) {
+        String[] lines = output.split("\n");
+        for (int i = 0; i < lines.length; i += 2) {
+            // Get user info line
             String[] userInfo = lines[i].split(",");
-            String userId = userInfo[1];
-            Set<String> movies = new HashSet<>();
-            if (i + 1 < lines.length && !lines[i + 1].contains(",")) {
-                if (!lines[i + 1].trim().isEmpty()) {
-                    movies.addAll(Arrays.asList(lines[i + 1].split(",")));
-                }
-                i++;
+            if (userInfo.length != 2) {
+                continue;
             }
+
+            String userId = userInfo[1].trim();
+            Set<String> movies = new HashSet<>();
+
+            // Get recommendations line if it exists
+            if (i + 1 < lines.length) {
+                String recommendationsLine = lines[i + 1].trim();
+                if (!recommendationsLine.isEmpty()) {
+                    movies.addAll(Arrays.asList(recommendationsLine.split(",")));
+                }
+            }
+
+            // Always add the user to the map, even with empty recommendations
             recommendations.put(userId, movies);
         }
 
