@@ -10,8 +10,8 @@ public class UserIdValidator {
         return id.matches("^[0-9]{8}[a-zA-Z]$") || id.matches("^[0-9]{9}$");
         }
     
-        public static String getErrorMessage() {
-            return "User ID must be exactly 9 characters long, start with numbers, and may end with one alphabetic character.";
+        public static String getErrorMessage(String id) {
+            return String.format("User ID {%s} is wrong", id);
         }
     
 }

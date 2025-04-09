@@ -9,7 +9,7 @@ public class UserNameValidator {
         return name.matches("^[a-zA-Z][a-zA-Z ]*$");
     }
 
-    public static String getErrorMessage() {
-        return "User name must contain only alphabetic characters and spaces, and must not start with space.";
+    public static String getErrorMessage(String name) {
+        return String.format("User Name {%s} is wrong", name);
     }
 }

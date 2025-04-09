@@ -5,10 +5,10 @@ import trial.User;
 
 public class UserValidator {
     
-    public static Object Validate(String[] userInfo, String[] likedMovies) throws InvalidUserException {
+    public static User isValidUser(String[] userInfo, String[] likedMovies) throws InvalidUserException {
         // Check if array is null or doesn't have exactly 2 elements
         if (userInfo == null || userInfo.length != 2) {
-            return "Invalid input: Must provide exactly 2 elements (name and ID)";
+            throw new InvalidUserException("Invalid input: Must provide exactly 2 elements (name and ID)");
         }
 
         String name = userInfo[0];
@@ -16,17 +16,18 @@ public class UserValidator {
 
         // Check for null elements
         if (name == null || id == null) {
-            return "Name and ID cannot be null";
+            throw new InvalidUserException("Name and ID cannot be null");
         }
 
         if (!isValidUserFields(name, id)) {
-            return buildErrorMessage(name, id);
+            throw new InvalidUserException(buildErrorMessage(name, id));
         }
 
         // If valid, create and return new User
         User user = new User();
         user.name = name;
         user.id = id;
+        user.likedMovies = likedMovies;
         return user;
     }
 
@@ -38,11 +39,11 @@ public class UserValidator {
         StringBuilder errorMessage = new StringBuilder();
 
         if (!UserNameValidator.isValid(name)) {
-            errorMessage.append(UserNameValidator.getErrorMessage()).append("\n");
+            errorMessage.append(UserNameValidator.getErrorMessage(name)).append("\n");
         }
 
         if (!UserIdValidator.isValid(id)) {
-            errorMessage.append(UserIdValidator.getErrorMessage()).append("\n");
+            errorMessage.append(UserIdValidator.getErrorMessage(id)).append("\n");
         }
 
         return errorMessage.toString().trim();
