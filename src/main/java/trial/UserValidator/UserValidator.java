@@ -1,10 +1,11 @@
 package trial.UserValidator;
 
+import trial.Exceptions.InvalidUserException;
 import trial.User;
 
 public class UserValidator {
     
-    public static Object isValidUser(String[] userInfo) {
+    public static Object Validate(String[] userInfo, String[] likedMovies) throws InvalidUserException {
         // Check if array is null or doesn't have exactly 2 elements
         if (userInfo == null || userInfo.length != 2) {
             return "Invalid input: Must provide exactly 2 elements (name and ID)";
