@@ -66,9 +66,9 @@ public class UserParser extends FileParser {
      * @return a validated User object
      * @throws WrittenError if there is an error during validation
      */
-    private User validateAndCreateUser(String[] userInfo, String[] likedMovies) throws WrittenError {
+    private User validateAndCreateUser(String[] userInfo) throws WrittenError {
         try {
-            return UserValidator.validate(userInfo, likedMovies);
+            return (User) UserValidator.isValidUser(userInfo);
         } catch (Exception e) {
             throw new WrittenError("ERROR:" + e.getMessage());
         }
