@@ -2,9 +2,7 @@ package trial.FileHandler;
 import java.io.BufferedReader;
 import java.io.IOException;
 public class FILEReader {
-    private String content; // String field to store the read content
-
-    // Method to read file content into the string field
+    private String content; 
     public void readFile(String filePath) {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -13,14 +11,14 @@ public class FILEReader {
             while ((line = reader.readLine()) != null) {
                 stringBuilder.append(line).append("\n");
             }
-            // Remove the last newline character if the file isn't empty
+          
             if (stringBuilder.length() > 0) {
                 stringBuilder.setLength(stringBuilder.length() - 1);
             }
             this.content = stringBuilder.toString();
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
-            this.content = ""; // Set empty string if error occurs
+            this.content = ""; 
         }
     }
 
@@ -34,7 +32,3 @@ public class FILEReader {
         this.content = content;
     }
 }
-/* Example usage of FileReader
-FileReader fileReader = new FileReader();
-fileReader.readFile("input.txt");
-System.out.println("File content: " + fileReader.getContent());*/
