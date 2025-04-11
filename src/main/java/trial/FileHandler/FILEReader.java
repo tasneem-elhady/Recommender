@@ -22,12 +22,10 @@ public class FILEReader {
         }
     }
 
-    // Getter for the content
     public String getContent() {
         return content;
     }
 
-    // Setter for the content (optional)
     public void setContent(String content) {
         this.content = content;
     }
