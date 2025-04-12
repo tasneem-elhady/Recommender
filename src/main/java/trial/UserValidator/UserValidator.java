@@ -1,5 +1,6 @@
 package trial.UserValidator;
 
+
 import trial.Exceptions.InvalidUserException;
 import trial.User;
 

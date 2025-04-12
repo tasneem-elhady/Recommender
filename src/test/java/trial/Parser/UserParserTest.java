@@ -9,7 +9,6 @@ import trial.Exceptions.InvalidUserException;
 import trial.Exceptions.WrittenError;
 import trial.MovieValidator.MovieValidator;
 import trial.Parser.UserParser;
-import trial.User;
 import trial.UserValidator.UserValidator;
 
 import java.util.HashMap;

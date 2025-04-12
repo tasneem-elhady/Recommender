@@ -3,7 +3,7 @@ package trial.Recommender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import trial.Movie;
-import trial.User;
+import trial.UserValidator;
 
 import java.util.*;
 

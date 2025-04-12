@@ -1,8 +1,8 @@
 package trial.Recommender;
 import trial.Movie;
+import trial.UserValidator;
 import trial.Parser.MovieParser;
 import trial.Parser.UserParser;
-import trial.User;
 
 import java.util.*;
 
