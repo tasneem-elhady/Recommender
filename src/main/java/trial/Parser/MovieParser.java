@@ -2,6 +2,7 @@ package trial.Parser;
 
 import trial.Exceptions.DuplicateException;
 import trial.Exceptions.InvalidFileFormatException;
+import trial.Exceptions.InvalidMovieException;
 import trial.Exceptions.WrittenError;
 import trial.Movie;
 import trial.MovieValidator.MovieValidator;
@@ -67,7 +68,7 @@ public class MovieParser extends FileParser {
     private Movie validateAndCreateMovie(String[] movieInfo, String[] genres) throws WrittenError {
         try {
             return MovieValidator.validate(movieInfo, genres);
-        } catch (Exception e) {
+        } catch (InvalidMovieException e) {
             throw new WrittenError("ERROR:" + e.getMessage());
         }
     }

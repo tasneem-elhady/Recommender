@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import trial.Exceptions.DuplicateException;
 import trial.Exceptions.InvalidFileFormatException;
+import trial.Exceptions.InvalidUserException;
+import trial.Exceptions.WrittenError;
 import trial.MovieValidator.MovieValidator;
 import trial.Parser.UserParser;
 import trial.User;
@@ -19,6 +21,7 @@ import static org.mockito.ArgumentMatchers.eq;
 class UserParserTest {
 
     private static String validInput;
+    private static String invalidUserInput;
     private static String invalidFormatInputSingleInfo;
     private static String invalidFormatInputMoreThan2Info;
     private static String invalidFormatInputLessThan2Lines;
@@ -30,6 +33,7 @@ class UserParserTest {
     @BeforeAll
     static void setUp() {
         validInput = "Alice Johnson,98765432B\nTM432,PF567\nBob Smith,123456789\nPF567,TM432\n";
+        invalidUserInput = "Alice Johnson,432B\nTM432,PF567\nBob Smith,123456789\nPF567,TM432\n";
         invalidFormatInputSingleInfo = "Alice Johnson,98765432B\nTM432,PF567\nBob Smith\nPF567,TM432\n";
         invalidFormatInputMoreThan2Info = "Alice Johnson,98765432B\nTM432,PF567\nBob Smith,123456789,1234\nPF567,TM432\n";
         invalidFormatInputLessThan2Lines = "Alice Johnson,98765432B\nTM432,PF567\nPF567,TM432\n";
@@ -74,6 +78,24 @@ class UserParserTest {
             });
         }
     }
+
+    @Test
+    void testInvalidUserInput() {
+        try (MockedStatic<UserValidator> mockedValidator = org.mockito.Mockito.mockStatic(UserValidator.class)) {
+
+
+            mockedValidator.when(() -> UserValidator.validate(
+                            eq(new String[]{"Alice Johnson", "432B"}),
+                            eq(new String[]{"TM432", "PF567"})))
+                    .thenThrow(InvalidUserException.class);
+
+            assertThrows(WrittenError.class, () -> {
+                UserParser parser = new UserParser(invalidUserInput);
+                parser.parseLines();
+            });
+        }
+    }
+
     @Test
     void testValidInput() throws Exception {
         try (MockedStatic<UserValidator> mockedValidator = org.mockito.Mockito.mockStatic(UserValidator.class)) {

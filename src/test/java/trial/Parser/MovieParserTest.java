@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import trial.Exceptions.DuplicateException;
 import trial.Exceptions.InvalidFileFormatException;
+import trial.Exceptions.InvalidMovieException;
+import trial.Exceptions.WrittenError;
 import trial.Movie;
 import trial.MovieValidator.MovieValidator;
 
@@ -20,6 +22,7 @@ import static org.mockito.ArgumentMatchers.eq;
 class MovieParserTest {
 
     private static String validInput;
+    private static String invalidMovieInput;
     private static String validInputMultipleOfTheSameGenre;
     private static String invalidFormatInputSingleInfo;
     private static String invalidFormatInputMoreThan2Info;
@@ -35,6 +38,7 @@ class MovieParserTest {
         pulpFiction = new Movie("Pulp Fiction", "PF567", new String[]{"Crime", "Drama"});
         Nemo = new Movie("Finding Nemo", "FN001", new String[]{"Animation","Adventure","Family","Action"});
         validInput = "The Matrix,TM432\nAction,Sci-Fi\nPulp Fiction,PF567\nCrime,Drama\n";
+        invalidMovieInput = "The Matrix,432\nAction,Sci-Fi\nPulp Fiction,PF567\nCrime,Drama\n";
         validInputMultipleOfTheSameGenre = "The Matrix,TM432\n" +
                                             "Action,Sci-Fi\n" +
                                             "Pulp Fiction,PF567\n" +
@@ -183,6 +187,22 @@ class MovieParserTest {
             Set<String> dramaMovies = genreMovies.get("Drama");
             assertNotNull(dramaMovies);
             assertTrue(dramaMovies.contains("PF567"));
+        }
+    }
+    @Test
+    void testInvalidMovie() {
+        try (MockedStatic<MovieValidator> mockedValidator = org.mockito.Mockito.mockStatic(MovieValidator.class)) {
+            
+            mockedValidator.when(() -> MovieValidator.validate(
+                            eq(new String[]{"The Matrix", "432"}),
+                            eq(new String[]{"Action", "Sci-Fi"})))
+                    .thenThrow(InvalidMovieException.class);
+
+
+            assertThrows(WrittenError.class, () -> {
+                MovieParser parser = new MovieParser(invalidMovieInput);
+                parser.parseLines();
+            });
         }
     }
 
