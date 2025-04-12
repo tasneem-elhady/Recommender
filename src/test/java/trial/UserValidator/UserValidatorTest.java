@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserValidatorTest {
 
         @Test
-        @DisplayName("Test Case 1: Simple valid Username + UserId (all digits)")
+        @DisplayName("Test Case 1: Simple valid username + userId (all digits)")
         void validCase1() {
             String[] userInfo = { "John", "123456789" };
             String[] likedMovies = { "Matrix", "Inception" };
@@ -49,8 +49,8 @@ class UserValidatorTest {
         }
 
         @Test
-        @DisplayName("Test Case 4: Username, userId that ends with single letter")
-        void validCase4() {
+        @DisplayName("Test Case 11: Username, userId that ends with single letter")
+        void validCase11() {
             String[] userInfo = { "Diana Prince", "12345678Z" };
             String[] likedMovies = { "Wonder Woman" };
             assertDoesNotThrow(() -> {
@@ -62,8 +62,8 @@ class UserValidatorTest {
         }
 
         @Test
-        @DisplayName("Test Case 5: Username, userId with a letter in the middle and ends with digit")
-        void validCase5() {
+        @DisplayName("Test Case 12: Username, userId with a letter in the middle and ends with digit")
+        void validCase12() {
             String[] userInfo = { "Bob Marley", "1234X6789" };
             String[] likedMovies = { "No Woman No Cry" };
             assertDoesNotThrow(() -> {
@@ -74,9 +74,20 @@ class UserValidatorTest {
             });
         }
 
+
         @Test
-        @DisplayName("Test Case 6: userName contains digit")
-        void invalidCase6() {
+        @DisplayName("Test Case 4: userName starts with space")
+        void invalidCase4() {
+            String[] userInfo = { "  Alex", "111111111" };
+            String[] likedMovies = { "Batman" };
+            assertThrows(InvalidUserException.class, () -> {
+                UserValidator.validate(userInfo, likedMovies);
+            }, "Expected to throw InvalidUserException due to userName starting with space");
+        }
+
+        @Test
+        @DisplayName("Test Case 5: userName contains digit")
+        void invalidCase5() {
             String[] userInfo = { "Dave2", "666666666" };
             String[] likedMovies = { "Gladiator" };
             assertThrows(InvalidUserException.class, () -> {
@@ -85,8 +96,8 @@ class UserValidatorTest {
         }
 
         @Test
-        @DisplayName("Test Case 7: userName contains special character")
-        void invalidCase7() {
+        @DisplayName("Test Case 6: userName contains special character")
+        void invalidCase6() {
             String[] userInfo = { "Sam-Patrick", "333333333" };
             String[] likedMovies = { "Tenet" };
             assertThrows(InvalidUserException.class, () -> {
@@ -95,8 +106,8 @@ class UserValidatorTest {
         }
 
         @Test
-        @DisplayName("Test Case 8: userId too short (8 chars)")
-        void invalidCase8() {
+        @DisplayName("Test Case 7: userId too short (8 chars)")
+        void invalidCase7() {
             String[] userInfo = { "Bruce Wayne", "12345678" };
             String[] likedMovies = { "The Dark Knight" };
             assertThrows(InvalidUserException.class, () -> {
@@ -105,8 +116,8 @@ class UserValidatorTest {
         }
 
         @Test
-        @DisplayName("Test Case 9: userId too long (10 chars)")
-        void invalidCase9() {
+        @DisplayName("Test Case 8: userId too long (10 chars)")
+        void invalidCase8() {
             String[] userInfo = { "Clark Kent", "1234567890" };
             String[] likedMovies = { "Man of Steel" };
             assertThrows(InvalidUserException.class, () -> {
@@ -115,8 +126,8 @@ class UserValidatorTest {
         }
 
         @Test
-        @DisplayName("Test Case 10: userId does not start with digit")
-        void invalidCase10() {
+        @DisplayName("Test Case 9: userId does not start with digit")
+        void invalidCase9() {
             String[] userInfo = { "Peter Parker", "A23456789" };
             String[] likedMovies = { "Spider-Man" };
             assertThrows(InvalidUserException.class, () -> {
@@ -125,22 +136,13 @@ class UserValidatorTest {
         }
 
         @Test
-        @DisplayName("Test Case 11: userId ends with two letters (invalid)")
-        void invalidCase11() {
+        @DisplayName("Test Case 10: userId ends with two letters (invalid)")
+        void invalidCase10() {
             String[] userInfo = { "Tony Stark", "1234567AB" };
             String[] likedMovies = { "Iron Man", "Avengers" };
             assertThrows(InvalidUserException.class, () -> {
                 UserValidator.validate(userInfo, likedMovies);
             }, "Expected to throw InvalidUserException because userId ends with two letters");
         }
-       
-        @Test
-        @DisplayName("Test Case 12: userName starts with space")
-        void invalidCase12() {
-            String[] userInfo = { "  Alex", "111111111" };
-            String[] likedMovies = { "Batman" };
-            assertThrows(InvalidUserException.class, () -> {
-                UserValidator.validate(userInfo, likedMovies);
-            }, "Expected to throw InvalidUserException due to userName starting with space");
-        }
+
 }

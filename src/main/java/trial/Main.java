@@ -8,12 +8,14 @@ import trial.Parser.MovieParser;
 import trial.Parser.UserParser;
 import trial.Recommender.MovieRecommender;
 
+import java.nio.file.Paths;
+
 public class Main {
     public static void main(String[] args) {
         FILEReader moviesFileReader = new FILEReader();
         FILEReader userFileReader = new FILEReader();
-        moviesFileReader.readFile("movies.txt");
-        userFileReader.readFile("users.txt");
+        moviesFileReader.readFile("src/main/java/trial/movies.txt");
+        userFileReader.readFile("src/main/java/trial/users.txt");
         FILEWriter fileWriter = new FILEWriter();
 
         try {
@@ -32,6 +34,7 @@ public class Main {
         }catch (WrittenError e){
             fileWriter.setContent(e.getMessage());
         }finally {
+            System.out.println(fileWriter.getContent());
             fileWriter.writeFile("recommendations.txt");
         }
 

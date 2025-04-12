@@ -4,6 +4,7 @@ import trial.Exceptions.DuplicateException;
 import trial.Exceptions.InvalidFileFormatException;
 import trial.Exceptions.InvalidUserException;
 import trial.Exceptions.WrittenError;
+import trial.User;
 import trial.UserValidator.UserValidator;
 
 import java.util.HashMap;
