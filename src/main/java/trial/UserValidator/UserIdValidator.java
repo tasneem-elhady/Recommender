@@ -7,7 +7,7 @@ public class UserIdValidator {
                 return false;
             }
         // Check if ID starts with numbers and optionally ends with one letter
-        return id.matches("^[0-9]{8}[a-zA-Z]$") || id.matches("^[0-9]{9}$");
+        return id.matches("^[0-9][0-9A-Za-z]{7}[0-9]$") || id.matches("^[0-9][0-9A-Za-z]{6}[0-9][A-Za-z]$");
         }
     
         public static String getErrorMessage(String id) {
