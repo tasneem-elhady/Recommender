@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import org.mockito.MockedStatic;
-import trial.Exceptions.DuplicateException;
+
 import trial.Exceptions.InvalidFileFormatException;
 import trial.Exceptions.InvalidMovieException;
 import trial.Exceptions.WrittenError;
@@ -49,7 +49,7 @@ class MovieParserTest {
         invalidFormatInputSingleInfo = "The Matrix,TM432\nAction,Sci-Fi\nPulp Fiction\nCrime,Drama\n";
         invalidFormatInputMoreThan2Info = "The Matrix,TM432\nAction,Sci-Fi\nPulp Fiction,PF567,1234\nCrime,Drama\n";
         invalidFormatInputLessThan2Lines = "The Matrix,TM432\nPulp Fiction\nCrime,Drama\n";
-        duplicateIdInput = "The Matrix,TM432\nAction,Sci-Fi\nPulp Fiction,TM432\nCrime,Drama\n";
+        duplicateIdInput = "The Matrix,TM432\nAction,Sci-Fi\nPulp Fiction,PF432\nCrime,Drama\n";
 
     }
 
@@ -73,21 +73,22 @@ class MovieParserTest {
     void testDuplicateIdInput() {
         try (MockedStatic<MovieValidator> mockedValidator = org.mockito.Mockito.mockStatic(MovieValidator.class)) {
             Movie matrix_d = new Movie("The Matrix", "TM432", new String[]{"Action", "Sci-Fi"});
-            Movie pulpFiction_d = new Movie("Pulp Fiction", "TM432", new String[]{"Crime", "Drama"});
+            Movie pulpFiction_d = new Movie("Pulp Fiction", "PF432", new String[]{"Crime", "Drama"});
             mockedValidator.when(() -> MovieValidator.validate(
                             eq(new String[]{"The Matrix", "TM432"}),
                             eq(new String[]{"Action", "Sci-Fi"})))
                     .thenReturn(matrix_d);
 
             mockedValidator.when(() -> MovieValidator.validate(
-                            eq(new String[]{"Pulp Fiction", "TM432"}),
+                            eq(new String[]{"Pulp Fiction", "PF432"}),
                             eq(new String[]{"Crime", "Drama"})))
                     .thenReturn(pulpFiction_d);
 
-            assertThrows(DuplicateException.class, () -> {
+            Exception exception = assertThrows(WrittenError.class, () -> {
                 MovieParser parser = new MovieParser(duplicateIdInput);
                 parser.parseLines();
             });
+            assertEquals("ERROR: Movie Id numbers {PF432} aren’t unique", exception.getMessage());
         }
     }
     @Test

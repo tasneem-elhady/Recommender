@@ -39,7 +39,7 @@ public class MovieParser extends FileParser {
      * @throws WrittenError if there is an error during movie validation
      */
     @Override
-    public void parseLines() throws DuplicateException, WrittenError {
+    public void parseLines() throws WrittenError {
         String[] lines = getLines();
 
         for (int i = 0; i < lines.length; i += 2) {
@@ -48,8 +48,9 @@ public class MovieParser extends FileParser {
 
             Movie movie = validateAndCreateMovie(movieInfo, genres);
 
-            if (movieMap.containsKey(movie.getId())) {
-                throw new DuplicateException("Duplicate movie id found: " + movie.getId());
+            if (movieMap.keySet().stream()
+                    .anyMatch(key -> key.endsWith(movie.getUniqueNumbers()))) {
+                throw new WrittenError("ERROR: Movie Id numbers {"+movie.getId()+"} aren’t unique");
             }
 
             movieMap.put(movie.getId(), movie);
