@@ -12,7 +12,7 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FileHandlerTest {
+public class FILEHandlerTest {
 
     private FILEReader reader;
     private FILEWriter writer;
