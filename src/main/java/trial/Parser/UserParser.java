@@ -2,6 +2,7 @@ package trial.Parser;
 
 import trial.Exceptions.DuplicateException;
 import trial.Exceptions.InvalidFileFormatException;
+import trial.Exceptions.InvalidUserException;
 import trial.Exceptions.WrittenError;
 import trial.User;
 import trial.UserValidator.UserValidator;
@@ -68,7 +69,7 @@ public class UserParser extends FileParser {
     private User validateAndCreateUser(String[] userInfo, String[] likedMovies) throws WrittenError {
         try {
             return UserValidator.validate(userInfo, likedMovies);
-        } catch (Exception e) {
+        } catch (InvalidUserException e) {
             throw new WrittenError("ERROR:" + e.getMessage());
         }
     }

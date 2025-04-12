@@ -9,10 +9,17 @@ public class Movie {
     public String id;
     public String []genre;
 
+    public String getUniqueNumbers() {
+        return uniqueNumbers;
+    }
+
+    public String uniqueNumbers;
+
     public Movie(String title, String id, String[] genre) {
         this.title = title;
         this.id = id;
         this.genre = genre;
+        this.uniqueNumbers = id.substring(id.length()-3);
     }
 
     public String getId() {

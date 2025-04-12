@@ -4,8 +4,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import org.mockito.MockedStatic;
-import trial.Exceptions.DuplicateException;
+
 import trial.Exceptions.InvalidFileFormatException;
+import trial.Exceptions.InvalidMovieException;
+import trial.Exceptions.WrittenError;
 import trial.Movie;
 import trial.MovieValidator.MovieValidator;
 
@@ -20,6 +22,7 @@ import static org.mockito.ArgumentMatchers.eq;
 class MovieParserTest {
 
     private static String validInput;
+    private static String invalidMovieInput;
     private static String validInputMultipleOfTheSameGenre;
     private static String invalidFormatInputSingleInfo;
     private static String invalidFormatInputMoreThan2Info;
@@ -35,6 +38,7 @@ class MovieParserTest {
         pulpFiction = new Movie("Pulp Fiction", "PF567", new String[]{"Crime", "Drama"});
         Nemo = new Movie("Finding Nemo", "FN001", new String[]{"Animation","Adventure","Family","Action"});
         validInput = "The Matrix,TM432\nAction,Sci-Fi\nPulp Fiction,PF567\nCrime,Drama\n";
+        invalidMovieInput = "The Matrix,432\nAction,Sci-Fi\nPulp Fiction,PF567\nCrime,Drama\n";
         validInputMultipleOfTheSameGenre = "The Matrix,TM432\n" +
                                             "Action,Sci-Fi\n" +
                                             "Pulp Fiction,PF567\n" +
@@ -45,7 +49,7 @@ class MovieParserTest {
         invalidFormatInputSingleInfo = "The Matrix,TM432\nAction,Sci-Fi\nPulp Fiction\nCrime,Drama\n";
         invalidFormatInputMoreThan2Info = "The Matrix,TM432\nAction,Sci-Fi\nPulp Fiction,PF567,1234\nCrime,Drama\n";
         invalidFormatInputLessThan2Lines = "The Matrix,TM432\nPulp Fiction\nCrime,Drama\n";
-        duplicateIdInput = "The Matrix,TM432\nAction,Sci-Fi\nPulp Fiction,TM432\nCrime,Drama\n";
+        duplicateIdInput = "The Matrix,TM432\nAction,Sci-Fi\nPulp Fiction,PF432\nCrime,Drama\n";
 
     }
 
@@ -69,21 +73,22 @@ class MovieParserTest {
     void testDuplicateIdInput() {
         try (MockedStatic<MovieValidator> mockedValidator = org.mockito.Mockito.mockStatic(MovieValidator.class)) {
             Movie matrix_d = new Movie("The Matrix", "TM432", new String[]{"Action", "Sci-Fi"});
-            Movie pulpFiction_d = new Movie("Pulp Fiction", "TM432", new String[]{"Crime", "Drama"});
+            Movie pulpFiction_d = new Movie("Pulp Fiction", "PF432", new String[]{"Crime", "Drama"});
             mockedValidator.when(() -> MovieValidator.validate(
                             eq(new String[]{"The Matrix", "TM432"}),
                             eq(new String[]{"Action", "Sci-Fi"})))
                     .thenReturn(matrix_d);
 
             mockedValidator.when(() -> MovieValidator.validate(
-                            eq(new String[]{"Pulp Fiction", "TM432"}),
+                            eq(new String[]{"Pulp Fiction", "PF432"}),
                             eq(new String[]{"Crime", "Drama"})))
                     .thenReturn(pulpFiction_d);
 
-            assertThrows(DuplicateException.class, () -> {
+            Exception exception = assertThrows(WrittenError.class, () -> {
                 MovieParser parser = new MovieParser(duplicateIdInput);
                 parser.parseLines();
             });
+            assertEquals("ERROR: Movie Id numbers {PF432} aren’t unique", exception.getMessage());
         }
     }
     @Test
@@ -183,6 +188,22 @@ class MovieParserTest {
             Set<String> dramaMovies = genreMovies.get("Drama");
             assertNotNull(dramaMovies);
             assertTrue(dramaMovies.contains("PF567"));
+        }
+    }
+    @Test
+    void testInvalidMovie() {
+        try (MockedStatic<MovieValidator> mockedValidator = org.mockito.Mockito.mockStatic(MovieValidator.class)) {
+            
+            mockedValidator.when(() -> MovieValidator.validate(
+                            eq(new String[]{"The Matrix", "432"}),
+                            eq(new String[]{"Action", "Sci-Fi"})))
+                    .thenThrow(InvalidMovieException.class);
+
+
+            assertThrows(WrittenError.class, () -> {
+                MovieParser parser = new MovieParser(invalidMovieInput);
+                parser.parseLines();
+            });
         }
     }
 

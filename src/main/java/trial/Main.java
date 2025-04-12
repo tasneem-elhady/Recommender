@@ -13,7 +13,7 @@ public class Main {
         FILEReader moviesFileReader = new FILEReader();
         FILEReader userFileReader = new FILEReader();
         moviesFileReader.readFile("movies.txt");
-        userFileReader.readFile("Users.txt");
+        userFileReader.readFile("users.txt");
         FILEWriter fileWriter = new FILEWriter();
 
         try {
