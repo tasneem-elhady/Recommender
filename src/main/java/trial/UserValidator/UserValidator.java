@@ -5,7 +5,7 @@ import trial.User;
 
 public class UserValidator {
     
-    public static User isValidUser(String[] userInfo, String[] likedMovies) throws InvalidUserException {
+    public static User validate(String[] userInfo, String[] likedMovies) throws InvalidUserException {
         // Check if array is null or doesn't have exactly 2 elements
         if (userInfo == null || userInfo.length != 2) {
             throw new InvalidUserException("Invalid input: Must provide exactly 2 elements (name and ID)");

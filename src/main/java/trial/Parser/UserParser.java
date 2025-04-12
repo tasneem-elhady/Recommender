@@ -25,9 +25,8 @@ public class UserParser extends FileParser {
      * @throws WrittenError if there is an error during user validation
      * @throws DuplicateException if a duplicate user ID is found
      */
-    public UserParser(String input) throws InvalidFileFormatException, WrittenError, DuplicateException {
+    public UserParser(String input) throws InvalidFileFormatException{
         super(input);
-        parseLines();
     }
 
     /**
@@ -37,7 +36,7 @@ public class UserParser extends FileParser {
      * @throws WrittenError if there is an error during user validation
      */
     @Override
-    protected void parseLines() throws DuplicateException, WrittenError {
+    public void parseLines() throws DuplicateException, WrittenError {
         String[] lines = getLines();
 
         // Iterate over the lines, processing each user and their liked movies
@@ -68,7 +67,7 @@ public class UserParser extends FileParser {
      */
     private User validateAndCreateUser(String[] userInfo, String[] likedMovies) throws WrittenError {
         try {
-            return UserValidator.Validate(userInfo, likedMovies);
+            return UserValidator.validate(userInfo, likedMovies);
         } catch (Exception e) {
             throw new WrittenError("ERROR:" + e.getMessage());
         }

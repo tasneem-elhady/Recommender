@@ -37,5 +37,5 @@ public abstract class FileParser {
      * @throws DuplicateException if a duplicate entry is found
      * @throws WrittenError if there is an error during parsing
      */
-    protected abstract void parseLines() throws DuplicateException, WrittenError;
+    public abstract void parseLines() throws DuplicateException, WrittenError;
 }

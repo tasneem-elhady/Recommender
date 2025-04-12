@@ -1,17 +1,39 @@
 package trial;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import trial.Exceptions.NonWrittenError;
+import trial.Exceptions.WrittenError;
+import trial.FileHandler.FILEReader;
+import trial.FileHandler.FILEWriter;
+import trial.Parser.MovieParser;
+import trial.Parser.UserParser;
+import trial.Recommender.MovieRecommender;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        FILEReader moviesFileReader = new FILEReader();
+        FILEReader userFileReader = new FILEReader();
+        moviesFileReader.readFile("movies.txt");
+        userFileReader.readFile("Users.txt");
+        FILEWriter fileWriter = new FILEWriter();
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        try {
+            MovieParser MovieFile = new MovieParser(moviesFileReader.getContent());
+            MovieFile.parseLines();
+            UserParser UserFile = new UserParser(userFileReader.getContent());
+            UserFile.parseLines();
+            MovieRecommender recommender = new MovieRecommender(MovieFile.getMovieMap(),
+                                                                UserFile.getUsersMap(),
+                                                                MovieFile.getGenreMovies());
+            String recommendationsOutput = recommender.getRecommendationsString();
+            fileWriter.setContent(recommendationsOutput);
+        } catch (NonWrittenError e) {
+            fileWriter.setContent("");
+            throw new RuntimeException(e.getMessage());
+        }catch (WrittenError e){
+            fileWriter.setContent(e.getMessage());
+        }finally {
+            fileWriter.writeFile("recommendations.txt");
         }
+
     }
 }

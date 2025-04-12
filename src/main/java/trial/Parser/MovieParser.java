@@ -27,9 +27,8 @@ public class MovieParser extends FileParser {
      * @throws DuplicateException if a duplicate movie ID is found
      * @throws WrittenError if there is an error during movie validation
      */
-    public MovieParser(String input) throws InvalidFileFormatException, DuplicateException, WrittenError {
+    public MovieParser(String input) {
         super(input);
-        parseLines();
     }
 
     /**
@@ -39,7 +38,7 @@ public class MovieParser extends FileParser {
      * @throws WrittenError if there is an error during movie validation
      */
     @Override
-    protected void parseLines() throws DuplicateException, WrittenError {
+    public void parseLines() throws DuplicateException, WrittenError {
         String[] lines = getLines();
 
         for (int i = 0; i < lines.length; i += 2) {
