@@ -135,4 +135,11 @@ public class MovieTitleValidatorTest {
             MovieTitleValidator.validate(movieTitle);
         });
     }
+    @Test
+    void testConsecutiveSpaces() {
+        String movieTitle = "The  Godfather";
+        assertDoesNotThrow(() -> {
+            MovieTitleValidator.validate(movieTitle);
+        });
+    }
 }
