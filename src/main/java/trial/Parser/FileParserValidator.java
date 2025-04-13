@@ -43,7 +43,9 @@ public class FileParserValidator {
         // Validate the structure of each pair of lines
         for (int i = 0; i < validLines.size(); i += 2) {
             String firstLine = validLines.get(i);
-            if (firstLine.split(",").length != 2) {
+            if (firstLine.split(",").length > 2 ||
+                    (firstLine.split(",").length == 2 && firstLine.endsWith(",")) ||
+                    firstLine.split(",").length == 1 && !firstLine.endsWith(",")) {
                 throw new InvalidFileFormatException("Invalid file structure: Expected 2 comma-separated values.");
             }
         }

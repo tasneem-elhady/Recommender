@@ -20,6 +20,20 @@ class FileParserValidatorTest {
             "Adventure,Sci-Fi,Action"
 
     };
+    String[] validLines2 = {
+            "The Shawshank Redemption," ,
+            "Drama,Crime" ,
+
+            "Inception,I395" ,
+            "Action,Sci-Fi,Thriller" ,
+
+            "The Dark Knight,TDK187" ,
+            "Action,Crime,Drama" ,
+
+            "Jurassic Park,JP564" ,
+            "Adventure,Sci-Fi,Action"
+
+    };
 
     @Test
     void testValidFileStructure() {
@@ -40,6 +54,26 @@ class FileParserValidatorTest {
                 });
 
     }
+    @Test
+    void testValidFileStructureSingleTailingComma() {
+        String input = "The Shawshank Redemption,\n" +
+                "Drama,Crime\n" +
+
+                "Inception,I395\n" +
+                "Action,Sci-Fi,Thriller\n" +
+
+                "The Dark Knight,TDK187\n" +
+                "Action,Crime,Drama\n" +
+
+                "Jurassic Park,JP564\n" +
+                "Adventure,Sci-Fi,Action";
+        assertDoesNotThrow(() ->{
+            String[] lines = FileParserValidator.validate(input);
+            assertArrayEquals(validLines2,lines);
+        });
+
+    }
+
     @Test
     void testEmptyLines() {
         String input = "The Shawshank Redemption,TSR728\n" +
@@ -118,6 +152,25 @@ class FileParserValidatorTest {
         );
         assertEquals("Invalid file structure: Expected 2 comma-separated values.", exception.getMessage());
     }
+    @Test
+    void testIdentificationExtraTailingComma() {
+        String input ="The Shawshank Redemption,TSR728\n" +
+                "Drama,Crime\n" +
+
+                "Inception,I395\n" +
+                "Action,Sci-Fi,Thriller\n" +
+
+                "The Dark Knight,TDK187,\n" +
+                "Action,Crime,Drama\n" +
+
+                "Jurassic Park,JP564\n" +
+                "Adventure,Sci-Fi,Action";
+        Exception exception = assertThrows(InvalidFileFormatException.class, () ->
+                FileParserValidator.validate(input)
+        );
+        assertEquals("Invalid file structure: Expected 2 comma-separated values.", exception.getMessage());
+    }
+
     @Test
     void testIdentificationLineThrowsException2() {
         String input ="The Shawshank Redemption,TSR728\n" +
