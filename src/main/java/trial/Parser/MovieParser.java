@@ -50,7 +50,7 @@ public class MovieParser extends FileParser {
 
             if (movieMap.keySet().stream()
                     .anyMatch(key -> key.endsWith(movie.getUniqueNumbers()))) {
-                throw new WrittenError("ERROR: Movie Id numbers {"+movie.getId()+"} aren’t unique");
+                throw new WrittenError("ERROR: Movie Id numbers "+movie.getId()+" aren’t unique");
             }
 
             movieMap.put(movie.getId(), movie);

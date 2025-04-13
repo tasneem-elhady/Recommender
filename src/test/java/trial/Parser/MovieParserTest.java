@@ -88,7 +88,7 @@ class MovieParserTest {
                 MovieParser parser = new MovieParser(duplicateIdInput);
                 parser.parseLines();
             });
-            assertEquals("ERROR: Movie Id numbers {PF432} aren’t unique", exception.getMessage());
+            assertEquals("ERROR: Movie Id numbers PF432 aren’t unique", exception.getMessage());
         }
     }
     @Test
