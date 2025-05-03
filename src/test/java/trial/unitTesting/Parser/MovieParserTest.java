@@ -1,16 +1,14 @@
-package trial.Parser;
+package trial.unitTesting.Parser;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
 import org.mockito.MockedStatic;
-
 import trial.Exceptions.InvalidFileFormatException;
 import trial.Exceptions.InvalidMovieException;
 import trial.Exceptions.WrittenError;
 import trial.Movie;
 import trial.MovieValidator.MovieValidator;
-
+import trial.Parser.MovieParser;
 
 import java.util.Map;
 import java.util.Set;

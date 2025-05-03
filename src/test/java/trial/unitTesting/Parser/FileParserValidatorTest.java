@@ -1,7 +1,8 @@
-package trial.Parser;
+package trial.unitTesting.Parser;
 
 import org.junit.jupiter.api.Test;
 import trial.Exceptions.InvalidFileFormatException;
+import trial.Parser.FileParserValidator;
 
 import static org.junit.jupiter.api.Assertions.*;
 

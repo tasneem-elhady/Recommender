@@ -1,10 +1,11 @@
-package trial.MovieValidator;
+package trial.unitTesting.MovieValidator;
 
 import org.junit.jupiter.api.Test;
-
-
-import static org.junit.jupiter.api.Assertions.*;
 import trial.Exceptions.InvalidMovieTitleException;
+import trial.MovieValidator.MovieTitleValidator;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MovieTitleValidatorTest {
     @Test 

@@ -1,9 +1,10 @@
-package trial.UserValidator;
+package trial.unitTesting.UserValidator;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import trial.Exceptions.InvalidUserException;
 import trial.User;
+import trial.UserValidator.UserValidator;
 
 import static org.junit.jupiter.api.Assertions.*;
 

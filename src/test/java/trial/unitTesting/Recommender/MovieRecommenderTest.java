@@ -1,13 +1,15 @@
-package trial.Recommender;
+package trial.unitTesting.Recommender;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import trial.Movie;
+import trial.Recommender.MovieRecommender;
 import trial.User;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MovieRecommenderTest {
     private MovieRecommender recommender;
