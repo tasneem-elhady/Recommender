@@ -35,7 +35,7 @@ public class Main {
             fileWriter.setContent(e.getMessage());
         }finally {
             System.out.println(fileWriter.getContent());
-            fileWriter.writeFile("recommendations.txt");
+            fileWriter.writeFile("src/main/java/trial/recommendations.txt");
         }
 
     }
