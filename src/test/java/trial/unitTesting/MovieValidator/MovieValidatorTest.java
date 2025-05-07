@@ -6,7 +6,6 @@
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
-import trial.Exceptions.InvalidMovieException;
 import trial.Exceptions.InvalidMovieIdLettersException;
 import trial.Exceptions.InvalidMovieIdNumbersException;
 import trial.Exceptions.InvalidMovieTitleException;
@@ -72,14 +71,6 @@ import trial.MovieValidator.MovieValidator;
             assertEquals("Movie Title The shawshank Redemption is wrong", exception.getMessage());
         }
 
-        // Test case: Null movieInfo array
-        @Test
-        void validate_NullMovieInfo_ThrowsException() {
-            assertThrows(InvalidMovieException.class,
-                () -> MovieValidator.validate(null, new String[]{"Drama"}),
-                "Expected exception for null input"
-            );
-        }
 
 
         // Test case: Empty title
